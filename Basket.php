@@ -39,6 +39,12 @@ class Basket
         $this->codePrices = array_combine($productCodes, $productPrices) ?: [];
     }
 
+    /**
+     * Adds a product to basket by the product code
+     *
+     * @param string $code
+     * @return $this
+     */
     public function add(string $code): self
     {
         $this->items[] = $code;
@@ -46,6 +52,11 @@ class Basket
         return $this;
     }
 
+    /**
+     * Clears the basket
+     *
+     * @return $this
+     */
     public function clear(): self
     {
         $this->items = [];
@@ -53,6 +64,11 @@ class Basket
         return $this;
     }
 
+    /**
+     * Returns the total price (in cents) including discounts and delivery
+     *
+     * @return int
+     */
     public function total(): int
     {
         $productsSum = array_reduce(
@@ -72,6 +88,9 @@ class Basket
         return $subTotal + $deliveryPrice;
     }
 
+    /**
+     * @return int
+     */
     private function calculateDiscount(): int
     {
         $codeCounts = array_count_values($this->items);
@@ -91,6 +110,10 @@ class Basket
         );
     }
 
+    /**
+     * @param int $subTotal
+     * @return int
+     */
     private function calculateDeliveryPrice(int $subTotal): int
     {
         foreach ($this->deliveryChargeRules as $chargeRule) {
